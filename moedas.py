@@ -53,7 +53,7 @@ def tipo_moeda(lista_moedas):
         # lista_dados_moedas.append([sigla_moeda, nome_moeda, cotacao_moeda, cap_mercado, fornecimento_circulante])
         # x = pd.DataFrame(lista_dados_moedas, columns=['Sigla','Nome', 'Cotação', 'Capitalização de Mercado', 'Fornecimento'])
         y =(f"Sigla: {sigla_moeda}\nNome: {nome_moeda}\nCotação: R$ {cotacao_moeda}\nCapitalização de Mercado: R$ {cap_mercado}\nFornecimento Circulante: {fornecimento_circulante}")
-        
+        # print(y)
         
     return y
 

@@ -85,8 +85,7 @@ class Myclient(discord.Client, commands.Context):
             await message.channel.send(f"Essa língua é: {constants.LANGUAGES[detect.lang]}", mention_author = True)
 
         if message.content.startswith("!coin"):
-             
-            value = message.content.split("!coin ", 1)[1]
+            value = [message.content.split("!coin ",1)[1]]
             await message.channel.send(tipo_moeda(value))
             
 
