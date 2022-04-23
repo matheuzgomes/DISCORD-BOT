@@ -1,10 +1,12 @@
+from ast import arg
 import discord
 import os
 import dotenv
 import random
 from discord.ext import commands
 from googletrans import Translator, constants
-
+import asyncio
+from moedas import tipo_moeda
 
 dotenv.load_dotenv()
 
@@ -56,32 +58,37 @@ class Myclient(discord.Client, commands.Context):
                 await message.channel.send(f"Opa, errou feio em a resposta era {answer}.")
 
         trad_msg = ('!t', '!T', '!Tradutor', '!Traduzir', '!tradutor', '!traduzir')
-
+        
+        def check(msg : discord.message.Message):
+                return msg.author == message.author
+            
         if message.content.startswith(trad_msg):
             await message.channel.send("Digita ai o que tu quer que eu traduza logo, RÁPIDO...")
-
-            def check(msg : discord.message.Message):
-                return msg.author == message.author
-
+            
             try:
                 msg = await self.wait_for('message', check=check, timeout = 15.0)
-            except:
+            except asyncio.TimeoutError:
                 return await message.channel.send("Lento demais, hoje não vai ter tradução pra tu 👍")
             translator = Translator()
-            trans_en = translator.translate(msg.content, dest= 'en')
-            await message.channel.send(f"Tua frase fica assim, se liga: {trans_en.text}")
+            trans_en = translator.translate(msg.content, dest= 'ja')
+            await message.channel.send(f"{trans_en.text}")
             
-        if message.content.startswith("!d"):
+        if message.content.startswith("!detect"):
             await message.channel.send("Quer ver eu descobrir em qual lingua ta a palavra que tu escrever ai ?")
 
             try:
-                msg_d = await self.wait_for('message', check = check)
-            except:
+                msg_d = await self.wait_for('message', check = check, timeout = 15)
+            except asyncio.TimeoutError:
                 return await message.channel.send("Tenho tua vida não amigão, demorando demais ai po tem como assim não.")
             
-            detect = translator.detect(msg_d.content)
-            await message.channel.send(constants.LANGUAGES[detect.lang])
+            detect = Translator().detect(msg_d.content)
+            await message.channel.send(f"Essa língua é: {constants.LANGUAGES[detect.lang]}", mention_author = True)
 
+        if message.content.startswith("!coin"):
+             
+            value = message.content.split("!coin ", 1)[1]
+            await message.channel.send(tipo_moeda(value))
+            
 
     async def on_member_join(self, member):
         guild = member.guild
@@ -92,6 +99,7 @@ class Myclient(discord.Client, commands.Context):
 
 intents = discord.Intents.default()
 intents.members = True
+intents.messages = True
 
 client = Myclient(intents=intents)
 client.run(DISCORD_TOKEN)
