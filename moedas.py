@@ -29,7 +29,7 @@ def tipo_moeda(lista_moedas):
         # fazendo a requisição da API
         response_moeda_real = session.get(url, params=moeda)
         moeda_real = json.loads(response_moeda_real.text)
-        print(moeda_real)
+        # print(moeda_real)
     
         # tratando dados do id da moeda
         id_moeda = moeda_real['data']
@@ -47,12 +47,13 @@ def tipo_moeda(lista_moedas):
         cap_mercado                 = dados_moeda['quote']['BRL']['market_cap']
         fornecimento_circulante     = dados_moeda['total_supply']
         # variacao_porcentagem_1h     = dados_moeda['quote']['BRL']['percent_change_1h']
-        # variacao_porcentagem_24h    = dados_moeda['quote']['BRL']['percent_change_24h']
+        variacao_porcentagem_24h    = dados_moeda['quote']['BRL']['percent_change_24h']
         # variacao_porcentagem_7_dias = dados_moeda['quote']['BRL']['percent_change_7d']
         # print(nome_moeda)
         # lista_dados_moedas.append([sigla_moeda, nome_moeda, cotacao_moeda, cap_mercado, fornecimento_circulante])
-        # x = pd.DataFrame(lista_dados_moedas, columns=['Sigla','Nome', 'Cotação', 'Capitalização de Mercado', 'Fornecimento'])
-        y =(f"Sigla: {sigla_moeda}\nNome: {nome_moeda}\nCotação: R$ {cotacao_moeda}\nCapitalização de Mercado: R$ {cap_mercado}\nFornecimento Circulante: {fornecimento_circulante}")
+        # print(variacao_porcentagem_24h)
+        # x = pd.DataFrame(lista_dados_moedas, columns=['Sigla','Nome', 'Cotação', 'Capitalização de Mercado', 'Fornecimento'])  
+        y =(f"Sigla: {sigla_moeda}\nNome: {nome_moeda}\nCotação: R$ {cotacao_moeda:0.2f}\nCapitalização de Mercado: R$ {cap_mercado}\nFornecimento Circulante: {fornecimento_circulante}\nVariação Percentual 24h: {variacao_porcentagem_24h:0.2f}%")
         # print(y)
         
     return y
